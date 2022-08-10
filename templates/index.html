@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Todo{% endblock %}
+
+{% block content %}
+<br>
+<div class="container">
+  <form class="row g-3" action="{{url_for('home')}}" method="post">
+    <div class="col-md-12 col-lg-1">
+      <label for="tsk" class="form-lable"><b>Todo:</b></label>
+    </div>
+    <div class="col-md-10 col-lg-10">
+      <input class="form-control" id="tsk"  name="tsk" required>
+    </div>
+    <div class="col-md-2 col-lg-1">
+      <input type="submit" class="btn btn-primary mb-3" value="+Add"> 
+    </div>
+  </form>
+</div>
+{% if tasks == [] %}
+<div class="container-fluid text-center">
+  <p>No Todo add new</p>
+</div>
+
+{% else %}
+<div class="container">
+  {% for task in tasks %}
+  <br>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-9">
+          <blockquote class="blockquote mb-0">
+            <p>{{ task.task }}</p>
+            <footer class="blockquote-footer">{{ task.date.strftime("%A") }}<cite title="Source Title"> {{  task.date.strftime("%b %d, %Y") }}</cite></footer>
+          </blockquote>
+        </div>
+        <div class="col-sm-3 text-center">
+          <a href="{{ url_for('delete', task_id=task.id)}}" type="button" class="btn btn-danger">Delete</a>
+          <a type="button" class="btn btn-success" href="{{url_for('done', task_id=task.id)}}">Done  </a>
+        </div>  
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="container">
+  <br>
+  <b>Completed Tasks</b>
+  <br>
+  {% for task in task_done %}
+  <br>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-9">
+          <blockquote class="blockquote mb-0">
+            <p>{{ task.task }}</p>
+            <footer class="blockquote-footer">{{ task.date.strftime("%A") }}<cite title="Source Title"> {{  task.date.strftime("%b %d, %Y") }}</cite></footer>
+          </blockquote>
+        </div>
+        <div class="col-sm-3 text-center">
+          <a href="{{ url_for('delete', task_id=task.id)}}" type="button" class="btn btn-danger">Delete</a>
+        </div>  
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
